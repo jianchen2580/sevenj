@@ -1,0 +1,7 @@
+config.js
+.cov
+node_modules
+
+*.min.*.js
+*.min.*.css
+assets.json
