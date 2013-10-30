@@ -1,7 +1,54 @@
 doctype 5
+
 html
   head
+    meta(charset='UTF-8')
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/base.css')
+    link(rel='stylesheet', href='/libs/font-awesome/font-awesome.css')
   body
-    block content
+    div#shape.shape
+      #head
+        block head
+        .logo
+        ul.menu
+          if current
+            if current_user.is_admin
+              li.add-node
+                a.icon-tag(title='add-node', href='/node/create')
+              li.add-topic
+                a.icon-plus(title='add-topic', href='/topic/create')
+              li.notification
+                if current_user.unread_notification_count
+                  a.icon-bell-alt(title='notification', href='/notifications?category=unread')
+                    span.count= current_user.unread_notification_count
+                else
+                  a.icon-bell-alt(title='notification', href='/notifications')
+              li.message
+                if current_user.unread_message_box_count
+                  a.icon-envelope-alt(title='message', href='/messages?category=unread')
+                    span.count= current_user.unread_message_box_count
+                else
+                  a.icon-envelope-alt(title='message', href='/messages')
+              li.settings
+                a.icon-cog(title='settings', href='/account/settings')
+              li.home
+                a.icon-user(title='home', href='/signin')
+          else
+            li.signin
+              a.icon-signin(title='signin', href='/signin')
+            li.signup
+              a.icon-plus-sign(title='signup', href='/signup')
+
+      body
+        block content
+    #footer
+      .tc
+        a(href='mailto:jianchen2580@gmail.com')
+          | 联系我
+        a.online-count(href='/users?category=online')
+          | 0 人在线
+  script(src='libs/jquery/jquery.js')
+  script(src='javascripts/base.js')
+
+
