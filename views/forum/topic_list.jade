@@ -1,0 +1,22 @@
+if topics
+  ul.item-list
+    - each topic in topics
+      li.item
+        a.avatar.fl(href='#{topic.author.url}')
+          img.avatar(src='#{topic.author.avatar_url}')
+        .item-content
+          h3.title
+            a(href='#{topic.url_sharp}')
+              #{topic.title}
+          .meta
+            a.node(href='#{topic.node.url}')
+            a.author-name(href='#{topic.author.url}')
+            a.time(href='#{topic.url_sharp}')
+            a.eye(href='#{topic}')
+              i.icon-highbulb
+else
+  .explain
+    暂无主题 
+
+
+

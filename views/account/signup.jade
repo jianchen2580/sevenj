@@ -1,0 +1,45 @@
+extends layout
+
+block style
+  link(rel='stylesheet', type='text/css', href='stylesheets/user.css')
+
+block content
+  ul.body-nav
+    li
+      a(href='/')
+        i.icon-home
+        | ;SevenJ
+  .organ.signup.nav-shadow      
+    .organ-head
+      | 注册
+    .organ-body
+      form.fm(method='post')
+        .fm-row
+          .fm-item.fm-required
+            lable.fm-label(for='fm-name')
+              | 用户名
+            input#fm-name.fm-text(maxlength='16', name='name', type='text')
+          .fm-explain
+            | 用户名只能包含英文字母和数字
+        .fm-row
+          .fm-item.fm-required
+            lable.fm-label(for='fm-email')
+              | 邮箱
+            input#fm-email.fm-text(maxlength='30', name='email', type='text')
+          .fm-explain
+            | 邮箱用于管理帐户
+        .fm-row
+          lable.fm-label(for='fm-password')
+              | 密码
+            input#fm-password.fm-text(maxlength='30', name='password', type='password')
+          .fm-explain
+            | 密码最少 6 字节
+        .fm-row
+            lable.fm-label(for='fm-password2')
+              | 密码确认
+            input#fm-password2.fm-text(maxlength='30', name='password2', type='password')
+        .fm-action
+          button.btn(type='submit')
+            | 注册
+
+

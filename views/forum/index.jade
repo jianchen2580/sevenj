@@ -1,0 +1,27 @@
+extends layout
+
+block subtitle
+  if (page > 1)
+    | 第 #{page} 页
+
+block content
+  .organ.topic-list
+    ul.nav.cleearfix.index-nav
+      li.on
+        a(href="/?category=index")
+         | 首页
+      li.on
+        a(href='/?category=index')
+         | 时间线
+      li.on
+        a(href='/?category=index')
+         | 热门
+      li.on
+        a(href='/?category=index')
+         | 最新
+      li.on
+        a(href='/?category=index')
+         | 荒漠
+    include topic_list  
+
+  

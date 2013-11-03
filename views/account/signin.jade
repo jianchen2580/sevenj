@@ -1,0 +1,26 @@
+extends layout
+
+block style
+  link(rel='stylesheet', type='text/css', href='stylesheets/user.css')
+
+block content
+  #content
+    ul.body-nav
+    .organ.signin.nav-shadow.clearfix
+
+      form.fm(action='/signin', method='post')
+        .fm-row
+          .fn-item.fm-required
+            label.fm-label(for='fm-account')
+              | 邮箱
+            input#fm-account.fm-text(type='text', value='', size='30', name='email', maxlength='30')
+        .fm-row
+          .fm-item.fm-required
+            label.fm-label(for='fm-password')
+              | 密码
+            input#fm-password.fm-text(type='password', value='', size='30', name='password', maxlength='24') 
+        .fm-action
+          button.btn(type='submit')
+            | 登录
+    a.forget-password.fr(title='找回密码', href='/findpassword')    
+  .forget-password.fr(title='找回密码', href='/findpassword')

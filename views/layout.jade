@@ -12,35 +12,35 @@ html
         block head
         .logo
         ul.menu
-          if current
-            if current_user.is_admin
+          if locals.current_user
+            if locals.current_user.is_admin
               li.add-node
                 a.icon-tag(title='add-node', href='/node/create')
-              li.add-topic
-                a.icon-plus(title='add-topic', href='/topic/create')
-              li.notification
-                if current_user.unread_notification_count
-                  a.icon-bell-alt(title='notification', href='/notifications?category=unread')
-                    span.count= current_user.unread_notification_count
-                else
-                  a.icon-bell-alt(title='notification', href='/notifications')
-              li.message
-                if current_user.unread_message_box_count
-                  a.icon-envelope-alt(title='message', href='/messages?category=unread')
-                    span.count= current_user.unread_message_box_count
-                else
-                  a.icon-envelope-alt(title='message', href='/messages')
-              li.settings
-                a.icon-cog(title='settings', href='/account/settings')
-              li.home
-                a.icon-user(title='home', href='/signin')
+            li.add-topic
+              a.icon-plus(title='add-topic', href='/topic/create')
+            li.notification
+              if current_user.unread_notification_count
+                a.icon-bell-alt(title='notification', href='/notifications?category=unread')
+                  span.count= current_user.unread_notification_count
+              else
+                a.icon-bell-alt(title='notification', href='/notifications')
+            li.message
+              if current_user.unread_message_box_count
+                a.icon-envelope-alt(title='message', href='/messages?category=unread')
+                  span.count= current_user.unread_message_box_count
+              else
+                a.icon-envelope-alt(title='message', href='/messages')
+            li.settings
+              a.icon-cog(title='settings', href='/account/settings')
+            li.home
+              a.icon-user(title='home', href='/signin')
           else
             li.signin
               a.icon-signin(title='signin', href='/signin')
             li.signup
               a.icon-plus-sign(title='signup', href='/signup')
 
-      body
+      #content
         block content
     #footer
       .tc

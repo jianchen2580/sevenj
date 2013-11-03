@@ -9,6 +9,11 @@
     "express": "3.4.3",
     "jade": "*",
     "mongoose": "*",
-    "eventproxy": "*"
+    "eventproxy": "*",
+    "validator": "*",
+    "crypto": "*",
+    "nodemailer": "*",
+    "marked-prettyprint": "*",
+    "xss": "*"
   }
 }

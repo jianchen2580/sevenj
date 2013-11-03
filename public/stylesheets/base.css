@@ -304,7 +304,7 @@ a.node:hover {
 .body-nav li {
     float: left;
     padding: 8px 30px 8px 16px;
-    background: url(/static/public/img/tail.png) no-repeat;
+    background: url(/images/tail.png) no-repeat;
     background-position: 92% 48%;
 }
 .body-nav li.now {
