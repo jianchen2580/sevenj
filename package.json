@@ -7,13 +7,13 @@
   },
   "dependencies": {
     "express": "3.4.3",
-    "jade": "*",
-    "mongoose": "*",
-    "eventproxy": "*",
-    "validator": "*",
-    "crypto": "*",
-    "nodemailer": "*",
-    "marked-prettyprint": "*",
-    "xss": "*"
+    "jade": "0.35.0",
+    "mongoose": "3.6.20",
+    "eventproxy": "0.2.5",
+    "validator": "2.0.0",
+    "crypto": "0.3",
+    "nodemailer": "0.5.5",
+    "marked-prettyprint": "0.2.8",
+    "xss": "0.0.6"
   }
 }

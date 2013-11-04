@@ -137,7 +137,7 @@ exports.signin = function (req, res, next) {
     // store session cookie
     gen_session(user, res);
     //check at some page just jump to home page
-    var refer = req.session._loginReferer || 'home';
+    var refer = req.session._loginReferer || '/';
     for (var i = 0, len = notJump.length; i !== len; ++i) {
       if (refer.indexOf(notJump[i]) >= 0) {
         refer = 'home';
@@ -152,7 +152,7 @@ exports.signin = function (req, res, next) {
 exports.signout = function (req, res, next) {
   req.session.destroy();
   res.clearCookie(config.auth_cookie_name, { path: '/' });
-  res.redirect(req.headers.referer || 'home');
+  res.redirect(req.headers.referer || '/');
 };
 
 exports.active_account = function (req, res, next) {

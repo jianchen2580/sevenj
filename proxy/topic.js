@@ -23,7 +23,12 @@ exports.getTopicById = function (id, callback) {
   var proxy = new EventProxy();
   var events = ['topic', 'tags', 'author', 'last_reply'];
   proxy.assign(events, function (topic, tags, author, last_reply) {
-    return callback(null, topic, tags, author, last_reply);
+    topic.tags = tags;
+    topic.author = author;
+    topic.reply = last_reply;
+    topic.friendly_create_at = Util.format_date(topic.create_at, true);
+
+    return callback(null, topic);
   }).fail(callback);
 
   Topic.findOne({_id: id}, proxy.done(function (topic) {
@@ -78,8 +83,10 @@ exports.getCountByQuery = function (query, callback) {
  * @param {Object} opt 搜索选项
  * @param {Function} callback 回调函数
  */
-exports.getTopicsByQuery = function (query, opt, callback) {
-  Topic.find(query, ['_id'], opt, function (err, docs) {
+exports.getTopicsByQuery = function (callback) {
+  //TODO: query remove or not?
+  //Topic.find(query, ['_id'], opt, function (err, docs) {
+  Topic.find(function (err, docs) {
     if (err) {
       return callback(err);
     }
@@ -100,11 +107,7 @@ exports.getTopicsByQuery = function (query, opt, callback) {
     proxy.fail(callback);
 
     topics_id.forEach(function (id, i) {
-      exports.getTopicById(id, proxy.done(function (topic, tags, author, last_reply) {
-        topic.tags = tags;
-        topic.author = author;
-        topic.reply = last_reply;
-        topic.friendly_create_at = Util.format_date(topic.create_at, true);
+      exports.getTopicById(id, proxy.done(function (topic) {
         topics[i] = topic;
         proxy.emit('topic_ready');
       }));

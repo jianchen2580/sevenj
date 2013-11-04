@@ -6,6 +6,7 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/base.css')
     link(rel='stylesheet', href='/libs/font-awesome/font-awesome.css')
+    block css
   body
     div#shape.shape
       #head
@@ -21,7 +22,8 @@ html
             li.notification
               if current_user.unread_notification_count
                 a.icon-bell-alt(title='notification', href='/notifications?category=unread')
-                  span.count= current_user.unread_notification_count
+                  span.count
+                    | #{current_user.unread_notification_count}
               else
                 a.icon-bell-alt(title='notification', href='/notifications')
             li.message
@@ -48,7 +50,8 @@ html
           | 联系我
         a.online-count(href='/users?category=online')
           | 0 人在线
-  script(src='libs/jquery/jquery.js')
-  script(src='javascripts/base.js')
+  script(src='/libs/jquery/jquery.js')
+  script(src='/javascripts/base.js')
+  block js
 
 

@@ -1,22 +1,27 @@
 if topics
   ul.item-list
     - each topic in topics
-      li.item
+      li.item.topic_91
         a.avatar.fl(href='#{topic.author.url}')
           img.avatar(src='#{topic.author.avatar_url}')
         .item-content
           h3.title
-            a(href='#{topic.url_sharp}')
-              #{topic.title}
+            a(href='/topic/#{topic.id}')
+              | #{topic.title}
           .meta
-            a.node(href='#{topic.node.url}')
+            a.node(href='#{topic.id}')
+              | #{topic.title}
             a.author-name(href='#{topic.author.url}')
-            a.time(href='#{topic.url_sharp}')
+              | #{topic.author.name}
+            | 创建于
+            a.time(href='/topic/#{topic._id}')
+              | #{topic.friendly_create_at}
             a.eye(href='#{topic}')
               i.icon-highbulb
 else
   .explain
     暂无主题 
+    | #{topics}
 
 
 

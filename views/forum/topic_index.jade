@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  ul.body-nav
+    li
+      a(href='/')
+        i.icon-home
+          | #{locals.site_name}
+    li
+      a(href='/tags')
+        | 标签 
+    li 
+      a(href='/topic/tags')
+        | #{topic.name}
+  .organ.topic.nav-shadow(data-id='#{topic._id}')
+    h2.topic-title
+      | #{topic.title}
+    .topic-content-wrap
+      a.topic-avatar(href='#{topic.author.url}')
+        img.avatar(src='#{topic.author.avatar_url}')
+      .content.topic-content
+        | !{topic.content}
+      script.
+        SyntaxHightlighter.all();
+    .meta.clearfix
+      span.time-wrap
+        a.author(href='#{topic.author.url}')
+          | #{topic.author.name}
+        | 创建于
+        span.time
+          | #{topic.friendly_create_at}
+      if locals.current_user
+        ul.vote.clearfix
+        if locals.current_user._id != topic.author._id
+          li.up.pressed
+            a(title='取消赞同', href='')
+              i.icon-thumbs-up
+              | 取消赞同
+          li.collect
+            a(title='收藏', href='')
+            | 收藏
+        else
+          li.edit
+            a(title='修改', href='/topic/#{topic._id}/edit')
+              i.icon-pencil
+              | 修改
+        ul.action.clearfix
+          li.reply
+            a(title='回复', href='#;')
+              i.icon-reply
+  div.organ.reply-list
+    ul.nav.clearfix
+      li.on
+        a(href='/topic/#{topic._id}')
+          评论列表
+

@@ -1,0 +1,59 @@
+extends layout
+
+block css
+  link(rel='stylesheet', type='text/css', href='/libs/chosen/chosen.css')
+block js
+  script(src='/libs/ueditor/ueditor.config.js')
+  script(src='/libs/ueditor/ueditor.all.min.js')
+  script(src='/libs/chosen/chosen.jquery.min.js')
+  script.
+    var width = $('#shape').width();
+    var ue = new UE.ui.Editor({initialFrameWidth: width * 0.75, initialFrameHeight: 300});
+    ue.render('editor');
+
+block content
+  ul.body-nay
+    li
+      a(href='/')
+        i.icon-home
+        locals.site_name
+    li
+      a(href='#{tag}')
+        | tag.name
+    li.now
+      | 主题创建
+  .organ.topic-create.nav-shadow
+    .organ-head
+      | 主题创建
+    .organ-body
+      form.fm(method='post')
+        .fm-row
+          .fm-item.fm-required
+            lable.fm-label(for='fm-node-name')
+              | 节点
+            select#fm-node_name.fm-text(data-placeholder='请选择一个节点', name='tag_name', size='30', style='display: none;')
+              for tag in tags
+                option(selected='#{tag.name}')
+                  | #{tag}
+            #fm-node-namechzn.chzn-container.chaz-container-single(style='width: 145px;')
+              a.chzn-single.chzn-defalut
+
+        .fm-row
+          .fm-item.fm-required
+            lable.fm-label(for='fm-title')
+              | 标题
+            input#fm-title.fm-text(maxlength='100', name='title', size='30', type='text')
+        .status-msg
+        .fm-row
+          .fm-item.fm-required
+            label.fm-label(for='fm-content')
+              | 内容
+            script#editor(type='text/plain', name='content')
+        .fm-action
+          button.btn(type='submit')
+            | 创建
+    form(style="display: none;", method='post', action='/image/upload', enctype='multipart/form-data', method='post')
+      input#pic-select(type='file', name='image', data-url='/image/upload')
+    form(style="display: none;", method='post', action='/upload/music', enctype='multipart/form-data', method='post')
+      input#music-select(type='file', name='music', data-url='/upload/music')
+
