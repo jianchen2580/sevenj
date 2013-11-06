@@ -253,9 +253,9 @@ exports.update = function (req, res, next) {
     }
 
     if (String(topic.author_id) === req.session.user._id || req.session.user.is_admin) {
+      console.log(req.body);
       var title = sanitize(req.body.title).str.trim();
-      title = sanitize(title).str;
-      var content = req.body.t_content;
+      var content = sanitize(req.body.content).str.trim();
       var topic_tags = [];
       /*
       if (req.body.topic_tags !== '') {

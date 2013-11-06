@@ -5,6 +5,10 @@ exports.getTagByName = function (name, callback) {
   Tag.findOne({name: name}, callback);
 };
 
+exports.getTagByUrlName = function (urlname, callback) {
+  Tag.findOne({urlname: urlname}, callback);
+};
+
 /**
  * 根据标签ID列表，获取一组标签
  * Callback:
@@ -48,11 +52,11 @@ exports.update = function (tag, name, background, order, description, callback) 
   tag.save(callback);
 };
 
-exports.newAndSave = function (name, background, order, description, callback) {
+exports.newAndSave = function (name, urlname, background, description, callback) {
   var tag = new Tag();
   tag.name = name;
+  tag.urlname = urlname;
   tag.background = background;
-  tag.order = order;
   tag.description = description;
   tag.save(callback);
 };

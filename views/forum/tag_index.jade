@@ -1,0 +1,60 @@
+extends layout
+
+block subtitle
+  | #{tag.name}
+block css
+  if tag.icon_img
+    link(type='image/x-icon', href='#{tag.icon}', rel='shortcut icon')
+  if tag.head_img
+    style(type='text/css')
+
+block js
+  script(src='/javascripts/tag.js')
+
+block content
+  ul.body-nav
+    li
+      a(href='/')
+        i.icon-home
+          | #{locals.site_name}
+    li
+      a(href='/tags')
+        | 标签 
+    li 
+      a(href='now')
+        | #{tag.name}
+  .organ.node.nav-shadow
+    h2.node-name
+      | #{tag.name}
+    ul.nav.minor-nav.clearfix.node-tag
+      li.description.on
+        a(href='/')
+          | 简介
+      li.relationship
+        a(href='/')
+          | 相关节点
+    .node-information
+      .content.node-description
+        | !{tag.description}
+    .node-data
+      .node-info-list
+        span.node-info-title 统计
+        span.node-info-topic 
+          i.icon-file-alt
+          | 22
+          | 主题
+        span.node-info-follow
+          i.icon-eye-open
+          | 22
+          | 关注
+      if locals.current_user
+        .node-action
+          a.btn.unfo(href='#{tag.url}')
+            | 已关注
+  .organ.topic-list
+    ul.nav.clearfix
+      li.on
+        a(href='/') 主题列表
+        a(href='/') 最新
+        a(href='/') 荒漠
+        a(href='/') 热门

@@ -1,0 +1,69 @@
+extends layout
+
+block subtitle
+  | 节点创建
+block css
+  link(rel='stylesheet', type='text/css', href='/libs/chosen/chosen.css')
+block js
+  script(src='/libs/ueditor/ueditor.config.js')
+  script(src='/libs/ueditor/ueditor.all.min.js')
+  script(src='/libs/chosen/chosen.jquery.min.js')
+  script.
+    var width = $('#shape').width();
+    var ue = new UE.ui.Editor({initialFrameWidth: width * 0.75, initialFrameHeight: 300});
+    ue.render('editor');
+
+block content
+  ul.body-nav
+    li
+      a(href='/')
+        i.icon-home
+          | #{locals.site_name}
+    li
+      a(href='/tags')
+        | 标签
+    li.now
+      | 标签创建
+  .organ.topic-create.nav-shadow
+    .organ-head
+      | 标签创建
+    .organ-body
+      form.fm(method='post')
+        .fm-row
+          .fm-item.fm-required
+            lable.fm-label(for='fm-parrent-name')
+              | 父标签
+            select#fm-node_name.fm-text(data-placeholder='请选择一个节点', name='tag_name', size='30', style='display: none;')
+              for tag in tags
+                option(selected='#{tag.name}')
+                  | #{tag}
+            #fm-node-namechzn.chzn-container.chaz-container-single(style='width: 145px;')
+              a.chzn-single.chzn-defalut
+        .fm-row
+          .fm-item.fm-required
+            lable.fm-label(for='fm-name')
+              | 标签名
+            input#fm-title.fm-text(maxlength='32', name='name', size='30', type='text')
+        .fm-row
+          .fm-item.fm-required
+            lable.fm-label(for='fm-urlname')
+              | 标签地址
+            input#fm-title.fm-text(maxlength='32', name='urlname', size='30', type='text')
+          .fm-explain
+            | 节点地址只能包含英文字母和数字
+        .status-msg
+        .fm-row
+          .fm-item.fm-required
+            label.fm-label(for='fm-description')
+              | 描述
+            script#editor(type='text/plain', name='description')
+          .fm-explain
+            | 节点描述
+        .fm-action
+          button.btn(type='submit')
+            | 创建
+        
+    form(style='display: none;', method='post', action='/image/upload', enctype='multipart/form-data', method='post')
+      input#pic-select(type='file', name='mimages', data-url='/image/upload')
+
+

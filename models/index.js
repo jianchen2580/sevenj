@@ -17,9 +17,8 @@ require('./relation');
 require('./message');
 require('./tag');
 require('./reply');
-/*
 require('./tag_collect');
-*/
+
 exports.User = mongoose.model('User');
 exports.Topic = mongoose.model('Topic');
 exports.TopicCollect = mongoose.model('TopicCollect');
@@ -28,6 +27,4 @@ exports.Relation = mongoose.model('Relation');
 exports.Message = mongoose.model('Message');
 exports.Tag = mongoose.model('Tag');
 exports.Reply = mongoose.model('Reply');
-/*
 exports.TagCollect = mongoose.model('TagCollect');
-*/
