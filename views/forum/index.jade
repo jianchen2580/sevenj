@@ -7,22 +7,58 @@ block subtitle
 block content
   .organ.topic-list
     ul.nav.clearfix.index-nav
-      li.on
-        a(href="/?category=index")
-         | 首页
-      li.on
-        a(href='/?category=index')
-         | 时间线
-      li.on
-        a(href='/?category=index')
-         | 热门
-      li.on
-        a(href='/?category=index')
-         | 最新
-      li.on
-        a(href='/?category=index')
-         | 荒漠
-      li.on
-        a(href='/?category=tag')
-         | 节点
+      if (category == 'index')
+        li.on
+          a(href="/?category=index")
+            | 首页
+      else if (typeof(category) == 'undefined')
+        li.on
+          a(href="/?category=index")
+            | 首页
+      else
+        li
+          a(href="/?category=index")
+            | 首页
+      if current_user
+        if (category == 'timeline')
+          li.on
+            a(href='/?category=timeline')
+              | 时间线
+        else
+          li
+            a(href='/?category=timeline')
+              | 时间线
+
+      if (category == 'hot')
+        li.on
+          a(href='/?category=hot')
+            | 热门
+      else
+        li
+          a(href='/?category=hot')
+            | 热门
+      if (category == 'latest')
+        li.on
+          a(href='/?category=latest')
+            | 最新
+      else
+        li
+          a(href='/?category=latest')
+            | 最新
+      if (category == 'desert')
+        li.on
+          a(href='/?category=desert')
+           | 荒漠
+      else 
+        li
+          a(href='/?category=desert')
+           | 荒漠
+      if (category == 'tags')
+        li.on
+          a(href='/tags')
+            | 节点
+      else
+        li
+          a(href='/tags')
+            | 节点
     include topic_list  

@@ -11,14 +11,28 @@ var EventProxy = require('eventproxy');
 
 exports.index = function (req, res, next) {
   var tag_urlname = req.params.urlname
-  console.log(tag_urlname);
 
   Tag.getTagByUrlName(tag_urlname, function (err, tag) {
-    console.log(tag);
     res.render('forum/tag_index', {
       tag: tag
     });
   });
+}
+
+exports.listTags = function (req, res, next) {
+  var category = sanitize(req.query.category).str.trim();
+  var ep = EventProxy.create('hot_tags', 'latest_tags', 'all_tags', function (hot_tags, latest_tags, all_tags) {
+    res.render('forum/tag_list', {
+      category: category,
+      hot_tags: hot_tags,
+      latest_tags: latest_tags,
+      all_tags: all_tags
+    });
+  });
+
+  Tag.getTagsByHot(ep.done('hot_tags'));
+  Tag.getTagsByLatest(ep.done('latest_tags'));
+  Tag.getAllTags(ep.done('all_tags'));
 }
 
 exports.listTopics = function (req, res, next) {
@@ -140,6 +154,7 @@ exports.create = function (req, res, next) {
   var urlname = sanitize(req.body.urlname).str.trim();
   var description = sanitize(req.body.description).str.trim();
   var background = sanitize(req.body.background).str.trim();
+  var parent_tag_name = sanitize(req.body.parent_tag_name).str.trim();
   var order = req.body.order;
 
   if (name === '') {
@@ -153,13 +168,17 @@ exports.create = function (req, res, next) {
     }
     if (tags && tags.length > 0) {
       res.render('notify/notify', {error: '这个标签已存在。'});
-      return;
     }
-    Tag.newAndSave(name, urlname, background, description, function (err, tag) {
+    Tag.getTagByName(parent_tag_name, function (err, parent_tag) {
       if (err) {
         return next(err);
       }
-      res.redirect('/tag/' + tag.urlname);
+      Tag.newAndSave(parent_tag._id, name, urlname, background, description, function (err, tag) {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/tag/' + tag.urlname);
+      });
     });
   });
 };

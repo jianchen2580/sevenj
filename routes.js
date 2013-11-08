@@ -5,13 +5,12 @@
  */
 
 var user = require('./controllers/user');
-var site = require('./controllers/site');
 var account = require('./controllers/account');
 var topic = require('./controllers/topic');
 var tag = require('./controllers/tag');
 
 module.exports = function (app) {
-    app.get('/', site.index);
+    app.get('/', topic.home);
 
     app.get('/signup', account.showSignup);
     app.post('/signup', account.signup);
@@ -21,8 +20,8 @@ module.exports = function (app) {
     app.get('/active_account', account.active_account);
 
     //app.get('/topic/create', auth.signinRequired, topic.create);
-    app.get('/topic/create', topic.create);
-    app.post('/topic/create', topic.put);
+    app.get('/topic/create', topic.showCreate);
+    app.post('/topic/create', topic.create);
     app.get('/topic/:tid', topic.index);
     app.get('/topic/:tid/edit', topic.showEdit);
     app.post('/topic/:tid/edit', topic.update);
@@ -31,6 +30,7 @@ module.exports = function (app) {
     // tag part
     app.get('/tag/create', tag.showCreate);
     app.post('/tag/create', tag.create);
+    app.get('/tags', tag.listTags);
     app.get('/tag/:urlname', tag.index);
     app.get('/tag/:name/edit', tag.listTopics);
     app.get('/tag/:name/delete', tag.edit);

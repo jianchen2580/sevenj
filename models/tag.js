@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId
 
 var TagSchema = new Schema({
+  parent_tag_id: { type: ObjectId },
   name: { type: String },
   urlname: { type: String },
   order: { type: Number, default: 1 },

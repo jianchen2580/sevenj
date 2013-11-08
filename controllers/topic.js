@@ -18,6 +18,7 @@ var TopicCollect = require('../proxy').TopicCollect;
 
 var EventProxy = require('eventproxy');
 var Util = require('../libs/util');
+var config = require('../config').config;
 
 /**
  * Topic page
@@ -26,6 +27,20 @@ var Util = require('../libs/util');
  * @param  {HttpResponse} res
  * @param  {Function} next
  */
+
+exports.home = function (req, res, next) {
+  var page = parseInt(req.query.page, 10) || 1;
+  var keyword = req.query.q || '';
+  var limit = config.list_topic_count;
+  var category = req.query.category
+  var render = function(err, topics) {
+      res.render('forum/index', {
+        topics: topics,
+        category: category
+      });
+  };
+  Topic.getTopicsByQuery(render);
+}
 exports.index = function (req, res, next) {
   var topic_id = req.params.tid;
   if (topic_id.length !== 24) {
@@ -34,166 +49,60 @@ exports.index = function (req, res, next) {
     });
   }
   
-  Topic.getTopicById(topic_id, function (err, topic, tags, authors) {
+  Topic.getTopicById(topic_id, function (err, topic) {
     res.render('forum/topic_index', {
       topic: topic
     });
   });
- }
+}
 
-  /*
-  ep.fail(next);
-
-  ep.once('topic', function (topic) {
-    console.log('@user is emit');
-    if (topic.content_is_html) {
-      return ep.emit('@user');
-    }
-    at.linkUsers(topic.content, ep.done(function (content) {
-      topic.content = content;
-      ep.emit('@user');
-    }));
-  });
-
-  Topic.getFullTopic(topic_id, ep.done(function (message, topic, tags, author, replies) {
-    if (message) {
-      ep.unbind();
-      return res.render('notify/notify', { error: message });
-    }
-
-    topic.visit_count += 1;
-    topic.save(ep.done(function () {
-      // format date
-      topic.friendly_create_at = Util.format_date(topic.create_at, true);
-      topic.friendly_update_at = Util.format_date(topic.update_at, true);
-
-      topic.tags = tags;
-      topic.author = author;
-      topic.replies = replies;
-
-      if (!req.session.user) {
-
-        console.log('topic is emit');
-        ep.emit('topic', topic);
-      } else {
-        TopicCollect.getTopicCollect(req.session.user._id, topic._id, ep.done(function (doc) {
-          topic.in_collection = doc;
-          console.log('topic is emit');
-          ep.emit('topic', topic);
-        }));
+exports.showCreate = function (req, res, next) {
+  from_tag = req.query.tag;
+  if (from_tag) { 
+    Tag.getTagByUrlName(from_tag, function (err, from_tag){
+      Tag.getAllTags(function (err, tags) {
+        if (err) {
+          return next(err);
+        }
+        res.render('forum/topic_edit', {from_tag: from_tag, tags: tags});
+      });
+    });
+  } else {
+    Tag.getAllTags(function (err, tags) {
+      if (err) {
+        return next(err);
       }
-    }));
-
-    // get author's relationship
-    if (req.session.user && req.session.user._id) {
-      console.log('done #########');
-      Relation.getRelation(req.session.user._id, topic.author_id, ep.done('get_relation'));
-    } else {
-      console.log('get_relation is emit');
-      ep.emit('get_relation', null);
-    }
-
-    // get author other topics
-    var options = { limit: 5, sort: [ [ 'last_reply_at', 'desc' ] ]};
-    var query = { author_id: topic.author_id, _id: { '$nin': [ topic._id ] } };
-    //Topic.getTopicsByQuery(query, options, ep.done('other_topics'));
-    Topic.getTopicsByQuery(ep.done('other_topics'));
-
-    // get no reply topics
-    var options2 = { limit: 5, sort: [ ['create_at', 'desc'] ] };
-    Topic.getTopicsByQuery({reply_count: 0}, options2, ep.done('no_reply_topics'));
+      res.render('forum/topic_edit', {tags: tags});
+    });
   }
 };
-*/
 
 exports.create = function (req, res, next) {
-  Tag.getAllTags(function (err, tags) {
+  var title = sanitize(req.body.title).str.trim();
+  var content = req.body.content;
+  var topic_tags = [];
+  var tag_name = sanitize(req.body.node_name).str.trim();
+
+  Tag.getTagByName(tag_name, function (err, tag) {
     if (err) {
       return next(err);
     }
-    res.render('forum/topic_edit', {tags: tags});
-  });
-};
 
-exports.put = function (req, res, next) {
-  var title = sanitize(req.body.title).str.trim();
-  title = sanitize(title).str;
-  var content = req.body.content;
-  var topic_tags = [];
-  /*
-  if (req.body.topic_tags !== '') {
-    topic_tags = req.body.tag_name.split(',');
-  }
-  */
-  if (title === '') {
-    Tag.getAllTags(function (err, tags) {
-      if (err) {
-        return next(err);
-      }
-      for (var i = 0; i < topic_tags.length; i++) {
-        for (var j = 0; j < tags.length; j++) {
-          if (topic_tags[i] === tags[j]._id) {
-            tags[j].is_selected = true;
-          }
-        }
-      }
-      res.render('forum/topic_edit', {tags: tags, edit_error: '标题不能是空的。', content: content});
-    });
-  } else if (title.length < 10 || title.length > 100) {
-    Tag.getAllTags(function (err, tags) {
-      if (err) {
-        return next(err);
-      }
-      for (var i = 0; i < topic_tags.length; i++) {
-        for (var j = 0; j < tags.length; j++) {
-          if (topic_tags[i] === tags[j]._id) {
-            tags[j].is_selected = true;
-          }
-        }
-      }
-      res.render('forum/topic_edit', {tags: tags, edit_error: '标题字数太多或太少', title: title, content: content});
-    });
-  } else {
-    Topic.newAndSave(title, content, req.session.user._id, function (err, topic) {
+    Topic.newAndSave(title, content, req.session.user._id, tag._id,  function (err, topic) {
       if (err) {
         return next(err);
       }
 
-      var proxy = new EventProxy();
-      var render = function () {
-        res.redirect('/topic/' + topic._id);
-      };
-
-      proxy.assign('tags_saved', 'score_saved', render);
-      proxy.fail(next);
-      // 话题可以没有标签
-      if (topic_tags.length === 0) {
-        proxy.emit('tags_saved');
-      }
-      var tags_saved_done = function () {
-        proxy.emit('tags_saved');
-      };
-      proxy.after('tag_saved', topic_tags.length, tags_saved_done);
-      //save topic tags
-      topic_tags.forEach(function (tag) {
-        TopicTag.newAndSave(topic._id, tag, proxy.done('tag_saved'));
-        Tag.getTagById(tag, proxy.done(function (tag) {
-          tag.topic_count += 1;
-          tag.save();
-        }));
-      });
-      User.getUserById(req.session.user._id, proxy.done(function (user) {
+      User.getUserById(req.session.user._id, function (err, user) {
         user.score += 5;
         user.topic_count += 1;
         user.save();
-        req.session.user.score += 5;
-        proxy.emit('score_saved');
-      }));
-
+        res.redirect('/topic/' + topic._id);
+      });
       //发送at消息
       at.sendMessageToMentionUsers(content, topic._id, req.session.user._id);
     });
-  }
+  });
 };
 
 exports.showEdit = function (req, res, next) {
@@ -253,7 +162,6 @@ exports.update = function (req, res, next) {
     }
 
     if (String(topic.author_id) === req.session.user._id || req.session.user.is_admin) {
-      console.log(req.body);
       var title = sanitize(req.body.title).str.trim();
       var content = sanitize(req.body.content).str.trim();
       var topic_tags = [];

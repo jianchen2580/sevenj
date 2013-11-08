@@ -12,13 +12,14 @@ block js
     var width = $('#shape').width();
     var ue = new UE.ui.Editor({initialFrameWidth: width * 0.75, initialFrameHeight: 300});
     ue.render('editor');
+  script(src='/javascripts/tag_create.js')
 
 block content
   ul.body-nav
     li
       a(href='/')
         i.icon-home
-          | #{locals.site_name}
+          | #{locals.config.site_name}
     li
       a(href='/tags')
         | 标签
@@ -33,12 +34,10 @@ block content
           .fm-item.fm-required
             lable.fm-label(for='fm-parrent-name')
               | 父标签
-            select#fm-node_name.fm-text(data-placeholder='请选择一个节点', name='tag_name', size='30', style='display: none;')
+            select#fm-node_name.fm-text(data-placeholder='请选择一个节点', name='parent_tag_name', size='30')
               for tag in tags
                 option(selected='#{tag.name}')
-                  | #{tag}
-            #fm-node-namechzn.chzn-container.chaz-container-single(style='width: 145px;')
-              a.chzn-single.chzn-defalut
+                  | #{tag.name}
         .fm-row
           .fm-item.fm-required
             lable.fm-label(for='fm-name')

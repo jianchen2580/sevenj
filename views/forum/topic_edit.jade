@@ -10,16 +10,19 @@ block js
     var width = $('#shape').width();
     var ue = new UE.ui.Editor({initialFrameWidth: width * 0.75, initialFrameHeight: 300});
     ue.render('editor');
+  script(src='/javascripts/topic_create.js')
 
 block content
-  ul.body-nay
+  | #{from_tag}
+  ul.body-nav
     li
       a(href='/')
         i.icon-home
-        locals.site_name
-    li
-      a(href='#{tag}')
-        | tag.name
+        | #{locals.config.site_name}
+    if (typeof(from_tag) !== 'undefined')
+      li
+        a(href='#{from_tag}')
+          | #{from_tag.name}
     li.now
       | 主题创建
   .organ.topic-create.nav-shadow
@@ -30,14 +33,11 @@ block content
         .fm-row
           .fm-item.fm-required
             lable.fm-label(for='fm-node-name')
-              | 节点
-            select#fm-node_name.fm-text(data-placeholder='请选择一个节点', name='tag_name', size='30', style='display: none;')
+              | 标签
+            select#fm-node_name.fm-text(data-placeholder='请选择一个标签', name='tag_name', size='30')
               for tag in tags
                 option(selected='#{tag.name}')
-                  | #{tag}
-            #fm-node-namechzn.chzn-container.chaz-container-single(style='width: 145px;')
-              a.chzn-single.chzn-defalut
-
+                  | #{tag.name}
         .fm-row
           .fm-item.fm-required
             lable.fm-label(for='fm-title')

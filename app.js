@@ -30,6 +30,10 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// app config
+app.locals({
+  config: config
+});
 // routes
 routes(app);
 

@@ -137,11 +137,12 @@ $(function() {
       fix_nav_bar();
     }
   });
-
+  /*
   if (notify.permissionLevel() === notify.PERMISSION_DEFAULT) {
     var html = '<div id="open-notification" class="tc"><a href="#;">点我开启桌面提醒</a></div>';
     $('body').prepend(html);
   }
+  */
 
   $('#open-notification a').on('click', this, function() {
     notify.requestPermission(function(){

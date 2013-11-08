@@ -1,0 +1,42 @@
+extends layout
+
+mixin tags(tags)
+  ul.parent-nodes
+    for tag in tags
+      li
+        a(href='/tag/#{tag.urlname}')
+          .node-tag
+            img.icon(align='absmiddle', src='#{tag.icon}')
+            span.name
+              | #{tag.name}
+          .description(data-tooltip='#{tag.description}')
+            | !{tag.description}
+
+block subtitle
+  标签
+block script
+  script(src='/javascripts/node.js')
+block content
+  ul.body-nav
+    li
+      a(href='/')
+        i.icon-home
+        locals.config.site_name
+    li.now
+      a(href='/tags') 标签
+
+  if (category == 'all')
+    .organ.node.nav-shadow
+      .organ-head
+        所有标签
+      +tags(all_tags);
+  else 
+    .organ.node.nav-shadow
+      .organ-head 最热标签
+
+      +tags(hot_tags)
+    .organ.node.nav-shadow
+      .organ-head 最新标签
+      +tags(latest_tags)
+    .organ.footer
+      a(title='查看所有', href='/tags?category=all') 查看所有

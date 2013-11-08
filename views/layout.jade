@@ -14,9 +14,8 @@ html
         .logo
         ul.menu
           if locals.current_user
-            if locals.current_user.is_admin
-              li.add-node
-                a.icon-tag(title='add-node', href='/node/create')
+            li.add-node
+              a.icon-tag(title='add-node', href='/tag/create')
             li.add-topic
               a.icon-plus(title='add-topic', href='/topic/create')
             li.notification

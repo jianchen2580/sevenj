@@ -11,7 +11,7 @@
     "mongoose": "3.6.20",
     "eventproxy": "0.2.5",
     "validator": "2.0.0",
-    "crypto": "0.3",
+    "crypto": "0.0.3",
     "nodemailer": "0.5.5",
     "marked-prettyprint": "0.2.8",
     "xss": "0.0.6"

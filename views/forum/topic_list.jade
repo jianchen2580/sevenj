@@ -9,8 +9,8 @@ if topics
             a(href='/topic/#{topic.id}')
               | #{topic.title}
           .meta
-            a.node(href='#{topic.id}')
-              | #{topic.title}
+            a.node(href='/tag/#{topic.tag.urlname}')
+              | #{topic.tag.name}
             a.author-name(href='#{topic.author.url}')
               | #{topic.author.name}
             | 创建于

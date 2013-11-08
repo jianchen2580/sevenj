@@ -21,9 +21,9 @@ var Util = require('../libs/util');
  */
 exports.getTopicById = function (id, callback) {
   var proxy = new EventProxy();
-  var events = ['topic', 'tags', 'author', 'last_reply'];
-  proxy.assign(events, function (topic, tags, author, last_reply) {
-    topic.tags = tags;
+  var events = ['topic', 'tag', 'author', 'last_reply'];
+  proxy.assign(events, function (topic, tag, author, last_reply) {
+    topic.tag = tag;
     topic.author = author;
     topic.reply = last_reply;
     topic.friendly_create_at = Util.format_date(topic.create_at, true);
@@ -34,7 +34,7 @@ exports.getTopicById = function (id, callback) {
   Topic.findOne({_id: id}, proxy.done(function (topic) {
     if (!topic) {
       proxy.emit('topic', null);
-      proxy.emit('tags', []);
+      proxy.emit('tag', null);
       proxy.emit('author', null);
       proxy.emit('last_reply', null);
       return;
@@ -42,12 +42,8 @@ exports.getTopicById = function (id, callback) {
     proxy.emit('topic', topic);
 
     // TODO: 可以只查tag_id这个字段的吧？
-    TopicTag.find({topic_id: topic._id}, proxy.done(function (topic_tags) {
-      var tags_id = [];
-      for (var i = 0; i < topic_tags.length; i++) {
-        tags_id.push(topic_tags[i].tag_id);
-      }
-      Tag.getTagsByIds(tags_id, proxy.done('tags'));
+    Tag.getTagById(topic.tag_id, proxy.done(function (tag) {
+      Tag.getTagById(tag._id, proxy.done('tag'));
     }));
 
     User.getUserById(topic.author_id, proxy.done('author'));
@@ -208,10 +204,11 @@ exports.reduceCount = function (id, callback) {
   });
 };
 
-exports.newAndSave = function (title, content, authorId, callback) {
+exports.newAndSave = function (title, content, authorId, tagId, callback) {
   var topic = new Topic();
   topic.title = title;
   topic.content = content;
   topic.author_id = authorId;
+  topic.tag_id = tagId;
   topic.save(callback);
 };
