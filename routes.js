@@ -4,8 +4,9 @@
  * MIT Licensed
  */
 
-var user = require('./controllers/user');
+var user = require('./controllers/user') ;
 var account = require('./controllers/account');
+var message = require('./controllers/message');
 var topic = require('./controllers/topic');
 var tag = require('./controllers/tag');
 
@@ -18,6 +19,9 @@ module.exports = function (app) {
     app.post('/signin', account.signin);
     app.get('/signout', account.signout);
     app.get('/active_account', account.active_account);
+
+    //messages
+    app.get('/messages', message.index);
 
     //app.get('/topic/create', auth.signinRequired, topic.create);
     app.get('/topic/create', topic.showCreate);

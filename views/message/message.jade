@@ -1,0 +1,47 @@
+extends layout
+
+block subtitle
+  私信
+block css
+
+block js
+  script(src='/javascripts/user.js')
+
+block content
+  ul.body-nav
+    li
+      a(href='/')
+        i.icon-home
+        #{locals.config.site_name}
+    li
+      a(href='/messages') 私信
+    li.now 
+      a(href='#{message_box.receiver.url}') #{message_box.receiver}
+  .organ.message-box.nav-shadow(data-id='#{message_box.id}')
+    ul.item-list.message-list.clearfix
+      for m in messages
+        li.item.message.clearfix(data-id='m._id')
+          a.avatar(href='#{m.sender.url}', title='#{m.sender.name}')
+            img.avatar(src='#{m.sender.avatar_url}')
+          .item-content
+            .meta
+              span.time #{m.create_at}
+            .content 
+              #{m.content}
+              .caret
+                .caret-outer
+                .caret-inner
+    .message-fm
+      if action
+        form.fm(action='#{action}', method='post')
+      else 
+        form.fm(method='post')
+          .fm-row
+            .fm-item.fm-required
+              label.fm-label(for='fm-content') 内容
+              textarea#fm-content.fm-text(maxlength='2000', name='content', size='30')
+          .fm-action
+            button.btn.message-submit(type='submit', data-uid='')
+              button
+
+

@@ -1,0 +1,53 @@
+extends layout
+
+block subtitle
+  私信列表
+block css
+
+block js
+  script(src='/javascripts/user.js')
+
+block content
+  ul.body-nav
+    li
+      a(href='/')
+        i.icon-home
+        #{locals.config.site_name}
+    li
+      a(href='/users') 用户
+    li
+      a(href='/') #{current_user.name}
+    li.now 私信
+  .organ.message-box-list.nav-shadow
+    ul.nav.clearfix.no-top-border
+      if category == 'unread'
+        li.on
+          a(href='/messages?category=unread') 未读
+      else 
+        li
+          a(href='/messages?category=unread') 未读
+      if category == 'all'
+        li.on
+          a(href='/messages') 全部
+      else 
+        li
+          a(href='/messages') 全部
+    if message_boxes
+      ul.item-list.message_box
+        for m in message_boxes
+          li.item
+            a.avatar.fl(href='m.receiver.url', title='m.receiver.name')
+              img.avatar(src='m.receiver.avatar_url')
+              span.avatar-name #{m.receiver.name}
+            if m.message
+              .item-content
+                .title
+                  a(href='/messages?user_id=#{ m.receiver._id}') #{m.message.content}
+                  .meta
+                    a.author-name(href='#{m.message.sender.url}') #{m.message.sender.name}
+                    发送于
+                    a.time(href='/messages?user_id=#{m.receiver._id}') #{m.message.create_at}
+    else
+      .explain
+        div
+          暂无私信 

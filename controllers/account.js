@@ -5,7 +5,7 @@ var crypto = require('crypto');
 var config = require('../config').config;
 
 var User = require('../proxy').User;
-var Message = require('../proxy').Message;
+var Notification = require('../proxy').Notification;
 var mail = require('../services/mail');
 
 //sign up
@@ -284,11 +284,11 @@ exports.auth_user = function (req, res, next) {
     if (config.admins[req.session.user.name]) {
       req.session.user.is_admin = true;
     }
-    Message.getMessagesCount(req.session.user._id, function (err, count) {
+    Notification.getNotificationsCount(req.session.user._id, function (err, count) {
       if (err) {
         return next(err);
       }
-      req.session.user.messages_count = count;
+      req.session.user.notifications_count = count;
       if (!req.session.user.avatar_url) {
         req.session.user.avatar_url = getAvatarURL(req.session.user);
       }
@@ -312,11 +312,11 @@ exports.auth_user = function (req, res, next) {
         if (config.admins[user.name]) {
           user.is_admin = true;
         }
-        Message.getMessagesCount(user._id, function (err, count) {
+        Notification.getNotificationsCount(user._id, function (err, count) {
           if (err) {
             return next(err);
           }
-          user.messages_count = count;
+          user.notifications_count = count;
           req.session.user = user;
           req.session.user.avatar_url = user.avatar_url;
           res.locals.current_user = req.session.user;

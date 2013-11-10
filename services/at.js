@@ -10,7 +10,7 @@
  */
 
 var User = require('../proxy').User;
-var Message = require('./message');
+var Notification = require('./notification');
 var EventProxy = require('eventproxy');
 
 /**
@@ -41,7 +41,7 @@ var fetchUsers = function (text) {
  * @param {String} authorId 作者ID
  * @param {Function} callback 回调函数
  */
-exports.sendMessageToMentionUsers = function (text, topicId, authorId, reply_id, callback) {
+exports.sendNotificationToMentionUsers = function (text, topicId, authorId, reply_id, callback) {
   if (typeof reply_id === 'function') {
     callback = reply_id;
     reply_id = null;
@@ -57,7 +57,7 @@ exports.sendMessageToMentionUsers = function (text, topicId, authorId, reply_id,
     }).fail(callback);
 
     users.forEach(function (user) {
-      Message.sendAtMessage(user._id, authorId, topicId, reply_id, ep.done('sent'));
+      Notification.sendAtNotification(user._id, authorId, topicId, reply_id, ep.done('sent'));
     });
   });
 };

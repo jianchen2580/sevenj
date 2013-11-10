@@ -1,5 +1,6 @@
 exports.User = require('./user');
 exports.Message = require('./message');
+exports.Notification = require('./notification');
 exports.Tag = require('./tag');
 exports.Topic = require('./topic');
 exports.Reply = require('./reply');
