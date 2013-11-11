@@ -23,6 +23,9 @@ module.exports = function (app) {
     //messages
     app.get('/messages', message.index);
 
+    //user page
+    app.get('/:name', user.index);
+
     //app.get('/topic/create', auth.signinRequired, topic.create);
     app.get('/topic/create', topic.showCreate);
     app.post('/topic/create', topic.create);

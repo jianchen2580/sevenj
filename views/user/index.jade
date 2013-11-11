@@ -1,0 +1,81 @@
+extends layout
+
+block subtitle
+  current_user.name
+block css
+block js
+  script(src='/javascripts/user.js')
+block content
+  ul.body-nav
+    li
+      a(href='/')
+        i.icon-home
+          #{locals.config.site_name}
+    li 
+      a(href='/users') 用户
+    li
+      a(href='#{user.url}') #{user.name}
+    li.now 主页
+  .organ.profile-head.nav-shadow
+    .profile-card.clearfix
+      a(href='')
+        img.avatar(src='#{user.avatar_url}')
+      .detail
+        span.online
+        strong #{user.name}
+        small 第 X  号会员，创建于 #{user.create_at}
+        .description #{user.description}
+        ul.profile-list
+          li
+            i.icon-map-marker #{user.city}
+          li
+            i.icon-globe
+      ul.status
+        li
+          a(href='#{user.url}')
+            span
+            主题
+        li
+          a(href='#{user.url}')
+            span
+            评论
+        li
+          a(href='#{user.url}')
+            span
+            正在关注
+        li
+          a(href='#{user.url}')
+            span
+            关注者
+    .profile-data
+      .profile-info-list
+        span.profile-info-title 获得
+        span.profile-info-up 
+          i.icon-thumbs-up
+            10 赞同
+        span.profile-info-thank
+          i.icon-heart
+            10 感谢
+
+      .profile-action
+        a.btn.unfo(href='#{user.url}', title='取消关注') 已关注
+        a.btn.mail(href='/message/create?user_id=#{user._id}', title='私信', data-uid='#{user._id}')  
+          i.icon-envelope
+
+    .class.organ.topic-list
+      ul.nav.clearfix
+        li.on
+          a(href='#{user.url}') 主页
+        li
+          a(href='#{user.url}/topics') 主题
+        li
+          a(href='#{user.url}/replies') 评论
+      if hot_topics
+        .organ-head
+          热门主题
+      if hot_replies
+        .organ-head
+          热门评论
+      .explain
+        div
+          暂无动态

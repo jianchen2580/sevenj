@@ -79,10 +79,10 @@ exports.getCountByQuery = function (query, callback) {
  * @param {Object} opt 搜索选项
  * @param {Function} callback 回调函数
  */
-exports.getTopicsByQuery = function (callback) {
+exports.getTopicsByQuery = function (query, opt, callback) {
   //TODO: query remove or not?
   //Topic.find(query, ['_id'], opt, function (err, docs) {
-  Topic.find(function (err, docs) {
+  Topic.find(query, opt, function (err, docs) {
     if (err) {
       return callback(err);
     }

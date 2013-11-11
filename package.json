@@ -14,6 +14,7 @@
     "crypto": "0.0.3",
     "nodemailer": "0.5.5",
     "marked-prettyprint": "0.2.8",
-    "xss": "0.0.6"
+    "xss": "0.0.6",
+    "utility": "0.0.x"
   }
 }
