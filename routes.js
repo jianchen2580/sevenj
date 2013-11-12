@@ -22,6 +22,7 @@ module.exports = function (app) {
 
     //messages
     app.get('/messages', message.index);
+    app.post('/message/create', message.create);
 
     //user page
     app.get('/:name', user.index);

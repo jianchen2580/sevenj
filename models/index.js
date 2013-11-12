@@ -26,6 +26,7 @@ exports.TopicCollect = mongoose.model('TopicCollect');
 exports.TopicTag = mongoose.model('TopicTag');
 exports.Relation = mongoose.model('Relation');
 exports.Message = mongoose.model('Message');
+exports.MessageBox = mongoose.model('MessageBox');
 exports.Notification = mongoose.model('Notification');
 exports.Tag = mongoose.model('Tag');
 exports.Reply = mongoose.model('Reply');

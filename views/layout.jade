@@ -15,9 +15,9 @@ html
         ul.menu
           if locals.current_user
             li.add-node
-              a.icon-tag(title='add-node', href='/tag/create')
+              a.icon-tag(title='添加标签', href='/tag/create')
             li.add-topic
-              a.icon-plus(title='add-topic', href='/topic/create')
+              a.icon-plus(title='添加主题', href='/topic/create')
             li.notification
               if current_user.unread_notification_count
                 a.icon-bell-alt(title='notification', href='/notifications?category=unread')
@@ -27,14 +27,14 @@ html
                 a.icon-bell-alt(title='notification', href='/notifications')
             li.message
               if current_user.unread_message_box_count
-                a.icon-envelope-alt(title='message', href='/messages?category=unread')
+                a.icon-envelope-alt(title='提醒', href='/messages?category=unread')
                   span.count= current_user.unread_message_box_count
               else
-                a.icon-envelope-alt(title='message', href='/messages')
+                a.icon-envelope-alt(title='私信', href='/messages')
             li.settings
-              a.icon-cog(title='settings', href='/account/settings')
+              a.icon-cog(title='设置', href='/account/settings')
             li.home
-              a.icon-user(title='home', href='/signin')
+              a.icon-user(title='个人主页', href='/#{current_user.name}')
           else
             li.signin
               a.icon-signin(title='signin', href='/signin')

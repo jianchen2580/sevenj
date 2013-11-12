@@ -12,33 +12,32 @@ block content
     li
       a(href='/')
         i.icon-home
-        #{locals.config.site_name}
+        | #{locals.config.site_name}
     li
       a(href='/users') 用户
     li
-      a(href='/') #{current_user.name}
+      a(href='#{current_user.url}') #{current_user.name}
     li.now 私信
   .organ.message-box-list.nav-shadow
     ul.nav.clearfix.no-top-border
-      if category == 'unread'
+      if (category == 'unread')
         li.on
           a(href='/messages?category=unread') 未读
-      else 
         li
-          a(href='/messages?category=unread') 未读
-      if category == 'all'
-        li.on
           a(href='/messages') 全部
       else 
         li
+          a(href='/messages?category=unread') 未读
+        li.on
           a(href='/messages') 全部
     if message_boxes
       ul.item-list.message_box
+        | #{message_boxes}
         for m in message_boxes
           li.item
             a.avatar.fl(href='m.receiver.url', title='m.receiver.name')
               img.avatar(src='m.receiver.avatar_url')
-              span.avatar-name #{m.receiver.name}
+              span.avatar-name #{m.receiver}
             if m.message
               .item-content
                 .title

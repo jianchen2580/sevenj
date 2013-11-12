@@ -39,7 +39,7 @@ exports.home = function (req, res, next) {
         category: category
       });
   };
-  Topic.getTopicsByQuery(render);
+  Topic.getTopicsByQuery({}, {}, render);
 }
 exports.index = function (req, res, next) {
   var topic_id = req.params.tid;
@@ -100,7 +100,7 @@ exports.create = function (req, res, next) {
         res.redirect('/topic/' + topic._id);
       });
       //发送at消息
-      at.sendMessageToMentionUsers(content, topic._id, req.session.user._id);
+      at.sendNotificationToMentionUsers(content, topic._id, req.session.user._id);
     });
   });
 };

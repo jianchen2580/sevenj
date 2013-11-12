@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
+
+
+var User = require('../models').User
   
 var MessageSchema = new Schema({
   message_box1_id: { type: ObjectId },
@@ -17,8 +20,8 @@ var MessageSchema = new Schema({
 });
 
 var MessageBoxSchema = new Schema({
-  sender_id: { type: ObjectId },
-  receiver_id: { type: ObjectId },
+  sender: { type: ObjectId, refs: 'User' },
+  receiver: { type: ObjectId, refs: 'User' },
   role: { type: String, default: 'message' },
   has_read: { type: Boolean, default: false },
   create_at: { type: Date, default: Date.now },
@@ -27,4 +30,4 @@ var MessageBoxSchema = new Schema({
 
 
 mongoose.model('Message', MessageSchema);
-mongoose.model('MessageBox', MessageSchema);
+mongoose.model('MessageBox', MessageBoxSchema);
